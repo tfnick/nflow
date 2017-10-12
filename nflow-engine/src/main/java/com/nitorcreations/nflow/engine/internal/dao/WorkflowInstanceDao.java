@@ -88,8 +88,10 @@ public class WorkflowInstanceDao {
   private long workflowInstanceQueryMaxResultsDefault;
   private long workflowInstanceQueryMaxActions;
   private long workflowInstanceQueryMaxActionsDefault;
-  int instanceStateTextLength;
-  int actionStateTextLength;
+
+  // temporary fix for 3.3.1-SNAPSHOT: prevent H2 error in which lengths become 0
+  int instanceStateTextLength = 128;
+  int actionStateTextLength = 128;
 
   @Inject
   public void setSqlVariants(SQLVariants sqlVariants) {
@@ -129,12 +131,6 @@ public class WorkflowInstanceDao {
   @Inject
   public void setWorkflowInstanceExecutor(WorkflowInstanceExecutor workflowInstanceExecutor) {
     this.workflowInstanceExecutor = workflowInstanceExecutor;
-  }
-
-  @PostConstruct
-  public void findColumnMaxLengths() {
-    instanceStateTextLength = jdbc.query("select state_text from nflow_workflow where 1 = 0", firstColumnLengthExtractor);
-    actionStateTextLength = jdbc.query("select state_text from nflow_workflow_action where 1 = 0", firstColumnLengthExtractor);
   }
 
   public int insertWorkflowInstance(WorkflowInstance instance) {
