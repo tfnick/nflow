@@ -12,6 +12,8 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.reactive.DispatcherHandler;
 import org.springframework.web.reactive.config.EnableWebFlux;
+import org.springframework.web.reactive.config.ResourceHandlerRegistry;
+import org.springframework.web.reactive.config.WebFluxConfigurer;
 
 import io.nflow.engine.config.NFlow;
 import io.nflow.rest.config.RestConfiguration;
@@ -21,7 +23,7 @@ import io.nflow.rest.config.RestConfiguration;
 @Import(RestConfiguration.class)
 @EnableTransactionManagement
 @EnableWebFlux
-public class NflowNettyConfiguration {
+public class NflowNettyConfiguration implements WebFluxConfigurer {
 
   @Bean
   public PlatformTransactionManager transactionManager(@NFlow DataSource nflowDataSource) {
@@ -31,6 +33,11 @@ public class NflowNettyConfiguration {
   @Bean
   public DispatcherHandler webHandler(ApplicationContext context) {
     return new DispatcherHandler(context);
+  }
+
+  @Override
+  public void addResourceHandlers(ResourceHandlerRegistry registry) {
+    registry.addResourceHandler("/nflow/explorer/**").addResourceLocations("classpath:/static/");
   }
 
 }
