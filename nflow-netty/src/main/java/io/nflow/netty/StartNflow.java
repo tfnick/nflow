@@ -111,7 +111,8 @@ public class StartNflow {
     // Log info
     logger.info("Successfully started Netty on port {} in {} seconds in environment {}", port, (end - start) / 1000.0,
         Arrays.toString(env.getActiveProfiles()));
-    logger.info("API available at http://{}:{}/nflow/v1", host, port);
+    logger.info("API available at http://{}:{}/{}", host, port, context.getEnvironment().getProperty("nflow.rest.path.prefix"));
+    logger.info("UI available at http://{}:{}/nflow/ui", host, port);
 
     return context;
   }
