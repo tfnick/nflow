@@ -1,5 +1,6 @@
 package io.nflow.rest.v1.springweb;
 
+import static io.nflow.rest.config.springweb.PathConstants.NFLOW_SPRING_WEB_PATH_PREFIX;
 import static io.nflow.rest.v1.ResourcePaths.NFLOW_WORKFLOW_INSTANCE_PATH;
 import static java.util.Optional.ofNullable;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -45,7 +46,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 @RestController
-@RequestMapping(value = NFLOW_WORKFLOW_INSTANCE_PATH, produces = APPLICATION_JSON_VALUE)
+@RequestMapping(value = NFLOW_SPRING_WEB_PATH_PREFIX + NFLOW_WORKFLOW_INSTANCE_PATH, produces = APPLICATION_JSON_VALUE)
 @Api("nFlow workflow instance management")
 @Component
 public class WorkflowInstanceResource extends ResourceBase {
@@ -89,8 +90,8 @@ public class WorkflowInstanceResource extends ResourceBase {
   @ApiOperation(value = "Fetch a workflow instance", notes = "Fetch full state and action history of a single workflow instance.")
   public ResponseEntity<ListWorkflowInstanceResponse> fetchWorkflowInstance(
       @ApiParam("Internal id for workflow instance") @PathVariable("id") int id,
-      @RequestParam("include") @ApiParam(value = INCLUDE_PARAM_DESC, allowableValues = INCLUDE_PARAM_VALUES, allowMultiple = true) String include,
-      @RequestParam("maxActions") @ApiParam("Maximum number of actions returned for each workflow instance") Long maxActions) {
+      @RequestParam(value = "include", required = false) @ApiParam(value = INCLUDE_PARAM_DESC, allowableValues = INCLUDE_PARAM_VALUES, allowMultiple = true) String include,
+      @RequestParam(value = "maxActions", required = false) @ApiParam("Maximum number of actions returned for each workflow instance") Long maxActions) {
     try {
       return ResponseEntity.ok().body(super.fetchWorkflowInstance(id, include, maxActions,
           this.workflowInstances, this.listWorkflowConverter));
@@ -102,17 +103,17 @@ public class WorkflowInstanceResource extends ResourceBase {
   @GetMapping
   @ApiOperation(value = "List workflow instances", response = ListWorkflowInstanceResponse.class, responseContainer = "List")
   public Collection<ListWorkflowInstanceResponse> listWorkflowInstances(
-      @RequestParam("id") @ApiParam("Internal id of workflow instance") List<Integer> ids,
-      @RequestParam("type") @ApiParam("Workflow definition type of workflow instance") List<String> types,
-      @RequestParam("parentWorkflowId") @ApiParam("Id of parent workflow instance") Integer parentWorkflowId,
-      @RequestParam("parentActionId") @ApiParam("Id of parent workflow instance action") Integer parentActionId,
-      @RequestParam("state") @ApiParam("Current state of workflow instance") List<String> states,
-      @RequestParam("status") @ApiParam("Current status of workflow instance") List<WorkflowInstanceStatus> statuses,
-      @RequestParam("businessKey") @ApiParam("Business key for workflow instance") String businessKey,
-      @RequestParam("externalId") @ApiParam("External id for workflow instance") String externalId,
-      @RequestParam("include") @ApiParam(value = INCLUDE_PARAM_DESC, allowableValues = INCLUDE_PARAM_VALUES, allowMultiple = true) String include,
-      @RequestParam("maxResults") @ApiParam("Maximum number of workflow instances to be returned") Long maxResults,
-      @RequestParam("maxActions") @ApiParam("Maximum number of actions returned for each workflow instance") Long maxActions) {
+      @RequestParam(value = "id", required = false, defaultValue = "") @ApiParam("Internal id of workflow instance") List<Integer> ids,
+      @RequestParam(value = "type", required = false, defaultValue = "") @ApiParam("Workflow definition type of workflow instance") List<String> types,
+      @RequestParam(value = "parentWorkflowId", required = false) @ApiParam("Id of parent workflow instance") Integer parentWorkflowId,
+      @RequestParam(value = "parentActionId", required = false) @ApiParam("Id of parent workflow instance action") Integer parentActionId,
+      @RequestParam(value = "state", required = false, defaultValue = "") @ApiParam("Current state of workflow instance") List<String> states,
+      @RequestParam(value = "status", required = false, defaultValue = "") @ApiParam("Current status of workflow instance") List<WorkflowInstanceStatus> statuses,
+      @RequestParam(value = "businessKey", required = false) @ApiParam("Business key for workflow instance") String businessKey,
+      @RequestParam(value = "externalId", required = false) @ApiParam("External id for workflow instance") String externalId,
+      @RequestParam(value = "include", required = false) @ApiParam(value = INCLUDE_PARAM_DESC, allowableValues = INCLUDE_PARAM_VALUES, allowMultiple = true) String include,
+      @RequestParam(value = "maxResults", required = false) @ApiParam("Maximum number of workflow instances to be returned") Long maxResults,
+      @RequestParam(value = "maxActions", required = false) @ApiParam("Maximum number of actions returned for each workflow instance") Long maxActions) {
     return super.listWorkflowInstances(ids, types, parentWorkflowId, parentActionId, states,
         statuses, businessKey, externalId, include, maxResults, maxActions,
         this.workflowInstances, this.listWorkflowConverter);

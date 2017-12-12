@@ -1,5 +1,6 @@
 package io.nflow.rest.v1.springweb;
 
+import static io.nflow.rest.config.springweb.PathConstants.NFLOW_SPRING_WEB_PATH_PREFIX;
 import static io.nflow.rest.v1.ResourcePaths.NFLOW_WORKFLOW_DEFINITION_PATH;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -22,7 +23,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
 @RestController
-@RequestMapping(value = NFLOW_WORKFLOW_DEFINITION_PATH, produces = APPLICATION_JSON_VALUE)
+@RequestMapping(value = NFLOW_SPRING_WEB_PATH_PREFIX + NFLOW_WORKFLOW_DEFINITION_PATH, produces = APPLICATION_JSON_VALUE)
 @Api("nFlow workflow definition management")
 @Component
 public class WorkflowDefinitionResource extends ResourceBase {
@@ -44,7 +45,7 @@ public class WorkflowDefinitionResource extends ResourceBase {
     notes = "Returns workflow definition(s): all possible states, transitions between states and other setting metadata."
       + "The workflow definition can deployed in nFlow engine or historical workflow definition stored in the database.")
   public List<ListWorkflowDefinitionResponse> listWorkflowDefinitions(
-      @RequestParam("type") @ApiParam("Included workflow types") List<String> types) {
+      @RequestParam(value = "type", required = false, defaultValue = "") @ApiParam("Included workflow types") List<String> types) {
     return super.listWorkflowDefinitions(types, workflowDefinitions, converter, workflowDefinitionDao);
   }
 }

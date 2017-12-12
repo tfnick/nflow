@@ -41,6 +41,7 @@ import io.nflow.jetty.mapper.NotFoundExceptionMapper;
 import io.nflow.rest.config.RestConfiguration;
 import io.nflow.rest.config.jaxrs.CorsHeaderContainerResponseFilter;
 import io.nflow.rest.config.jaxrs.DateTimeParamConverterProvider;
+import io.nflow.rest.config.jaxrs.PathPrefixFilter;
 import io.nflow.rest.v1.jaxrs.ArchiveResource;
 import io.nflow.rest.v1.jaxrs.StatisticsResource;
 import io.nflow.rest.v1.jaxrs.WorkflowDefinitionResource;
@@ -74,6 +75,7 @@ public class NflowJettyConfiguration {
         jsonProvider(nflowRestObjectMapper),
         validationExceptionMapper(),
         corsHeadersProvider(),
+        pathPrefixProvider(),
         notFoundExceptionMapper(),
         new BadRequestExceptionMapper(),
         new DateTimeParamConverterProvider()
@@ -101,6 +103,10 @@ public class NflowJettyConfiguration {
 
   private CorsHeaderContainerResponseFilter corsHeadersProvider() {
     return new CorsHeaderContainerResponseFilter(env);
+  }
+
+  private PathPrefixFilter pathPrefixProvider() {
+    return new PathPrefixFilter(env);
   }
 
   @Bean

@@ -1,5 +1,6 @@
 package io.nflow.rest.v1.springweb;
 
+import static io.nflow.rest.config.springweb.PathConstants.NFLOW_SPRING_WEB_PATH_PREFIX;
 import static io.nflow.rest.v1.ResourcePaths.NFLOW_STATISTICS_PATH;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -22,7 +23,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
 @RestController
-@RequestMapping(value = NFLOW_STATISTICS_PATH, produces = APPLICATION_JSON_VALUE)
+@RequestMapping(value = NFLOW_SPRING_WEB_PATH_PREFIX + NFLOW_STATISTICS_PATH, produces = APPLICATION_JSON_VALUE)
 @Api("nFlow statistics")
 @Component
 public class StatisticsResource {
@@ -42,10 +43,10 @@ public class StatisticsResource {
   @ApiOperation("Get workflow definition statistics")
   public WorkflowDefinitionStatisticsResponse getStatistics(
       @PathVariable("type") @ApiParam(value = "Workflow definition type", required = true) String type,
-      @RequestParam("createdAfter") @ApiParam("Include only workflow instances created after given time") DateTime createdAfter,
-      @RequestParam("createdBefore") @ApiParam("Include only workflow instances created before given time") DateTime createdBefore,
-      @RequestParam("modifiedAfter") @ApiParam("Include only workflow instances modified after given time") DateTime modifiedAfter,
-      @RequestParam("modifiedBefore") @ApiParam("Include only workflow instances modified before given time") DateTime modifiedBefore) {
+      @RequestParam(value = "createdAfter", required = false) @ApiParam("Include only workflow instances created after given time") DateTime createdAfter,
+      @RequestParam(value = "createdBefore", required = false) @ApiParam("Include only workflow instances created before given time") DateTime createdBefore,
+      @RequestParam(value = "modifiedAfter", required = false) @ApiParam("Include only workflow instances modified after given time") DateTime modifiedAfter,
+      @RequestParam(value = "modifiedBefore", required = false) @ApiParam("Include only workflow instances modified before given time") DateTime modifiedBefore) {
     return statisticsConverter.convert(statisticsService.getWorkflowDefinitionStatistics(type, createdAfter, createdBefore, modifiedAfter,
         modifiedBefore));
   }
