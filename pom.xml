@@ -146,6 +146,7 @@
     <maven-surefire.version>2.20.1</maven-surefire.version>
     <metrics.version>3.2.5</metrics.version>
     <mockito.version>2.12.0</mockito.version>
+    <mssql.version>6.4.0.jre8</mssql.version>
     <multithreadedtc.version>1.01</multithreadedtc.version>
     <mysql.version>5.1.45</mysql.version>
     <netty.version>4.1.14.Final</netty.version>
@@ -687,6 +688,11 @@
         <groupId>org.postgresql</groupId>
         <artifactId>postgresql</artifactId>
         <version>${postgresql.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.microsoft.sqlserver</groupId>
+        <artifactId>mssql-jdbc</artifactId>
+        <version>${mssql.version}</version>
       </dependency>
       <!-- misc -->
       <dependency>
